@@ -8,8 +8,9 @@
 4. [Processing load events](#processing-load-events)
 5. [Source description](#source-description)
 6. [DRM configuration](#drm-configuration)
-7. [Targeting the Cast Receiver application](#targeting-the-cast-receiver-application)
-8. [Conclusion](#conclusion)
+7. [Advertising](#advertising)
+8. [Targeting the Cast Receiver application](#targeting-the-cast-receiver-application)
+9. [Conclusion](#conclusion)
 
 ### Overview
 The sample application outlined in this document demonstrates the creation of a
@@ -119,6 +120,10 @@ Debug logs can be viewed by connecting remotely to the cast device or as an over
 ```javascript
 this._castDebugLogger.showDebugLogs(true);
 ```
+
+### Advertising
+
+This project supports VAST mid-rolls and post-rolls. Support for pre-rolls and VMAP is currently unavailable.
 
 ### Targeting the Cast Receiver application
 
