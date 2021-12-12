@@ -1,4 +1,5 @@
 import { DrmConfiguration } from "./DrmConfiguration";
+import {AdDescription} from "../ads/AdDescription";
 
 /**
  * NOTICE: the SourceDescription interfaces in this file are limited to the properties required in the
@@ -24,6 +25,7 @@ export interface SourceDescription {
  * @public
  */
 export interface Source {
+    integrationData: IntegrationData;
 
     /**
      * The source URL of the media resource.
@@ -36,13 +38,7 @@ export interface Source {
     contentProtection: DrmConfiguration | undefined;
 }
 
-export interface AdDescription {
-    integration: string | undefined;
-    sources: AdSource;
-    timeOffset: string | number;
-}
-
-export interface AdSource {
-    src: string;
-    type: string;
+export interface IntegrationData {
+    preplayResponse: any;
+    source: any;
 }

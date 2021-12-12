@@ -1,8 +1,8 @@
-import { framework } from "chromecast-caf-receiver";
 import {Break, BreakClip, MediaInformation} from "chromecast-caf-receiver/cast.framework.messages";
-import {AdDescription, AdSource} from "../source/SourceDescription";
+import {AdDescription, AdSource} from "./AdDescription";
+import {SourceDescription} from "../source/SourceDescription";
 
-export class AdsConfigEnricher {
+export class CSAIAdsConfigEnricher {
 
     constructor(private readonly _ads: AdDescription[]) {
     }
@@ -64,6 +64,13 @@ export class AdsConfigEnricher {
         })
         mediaInformation.breakClips = breakClips;
         mediaInformation.breaks = breaks;
+    }
+
+    static getCSAI(sourceDescription : SourceDescription): undefined | AdDescription[] {
+        if (sourceDescription.ads && sourceDescription.ads.length > 0) {
+            return sourceDescription.ads;
+        }
+        return undefined;
     }
 }
 

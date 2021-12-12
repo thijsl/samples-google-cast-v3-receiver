@@ -11,9 +11,12 @@ import { DrmConfiguration } from "./source/DrmConfiguration";
 import { VudrmWidevineConfigEnricher } from "./drm/VudrmWidevineConfigEnricher";
 import { WidevineConfigEnricher } from "./drm/WidevineConfigEnricher";
 import { VudrmConfiguration } from "./drm/VudrmConfiguration";
-import {AdDescription, Source, SourceDescription} from "./source/SourceDescription";
+import {Source, SourceDescription} from "./source/SourceDescription";
 import { CastDebugLogger } from "chromecast-caf-receiver/cast.debug";
-import {AdsConfigEnricher} from "./ads/AdsConfigEnricher";
+import {CSAIAdsConfigEnricher} from "./ads/CSAIAdsConfigEnricher";
+import {SSAIAdsConfigEnricher} from "./ads/SSAIAdsConfigEnricher";
+import {SSAIConfig} from "./ads/SSAIConfig";
+import {AdDescription} from "./ads/AdDescription";
 
 const LOG_RECEIVER_TAG = 'SampleReceiver';
 
@@ -67,7 +70,6 @@ export class SampleReceiver {
         const selectedSource = sourceDescription?.sources?.find((source: Source) => {
             return source.src === loadRequestData.media.contentId || source.src === loadRequestData.media.contentUrl;
         });
-        const ads = sourceDescription?.ads;
         if (selectedSource) {
             const playbackConfig = Object.assign(new PlaybackConfig(), this._playerManager.getPlaybackConfig());
 
@@ -79,9 +81,7 @@ export class SampleReceiver {
             }
 
             // Check for ads
-            if (ads) {
-               createAdsConfigEnrichter(ads)?.enrich(loadRequestData.media);
-            }
+           createAdsConfigEnrichter(sourceDescription)?.enrich(loadRequestData.media);
 
             this._playerManager.setPlaybackConfig(playbackConfig);
         }
@@ -117,9 +117,13 @@ export function createContentProtectionConfigEnricher(contentProtection: DrmConf
     return undefined;
 }
 
-export function createAdsConfigEnrichter(ads: AdDescription[]): AdsConfigEnricher | undefined {
-    if (ads && ads.length > 0) {
-        return new AdsConfigEnricher(ads);
+export function createAdsConfigEnrichter(sourceDescription: SourceDescription): CSAIAdsConfigEnricher | SSAIAdsConfigEnricher | undefined {
+    const csai : undefined | AdDescription[] = CSAIAdsConfigEnricher.getCSAI(sourceDescription);
+    const ssai : undefined | SSAIConfig = SSAIAdsConfigEnricher.getSSAI(sourceDescription);
+    if (csai) {
+        return new CSAIAdsConfigEnricher(csai);
+    } else if (ssai) {
+        return new SSAIAdsConfigEnricher(ssai);
     }
     return undefined;
 }
