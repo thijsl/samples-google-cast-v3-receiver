@@ -35,7 +35,7 @@ export class CSAIAdsConfigEnricher {
         const breaks : Break[] = [];
         this._ads.forEach((ad, index) => {
             const adSource : AdSource = ad.sources;
-            const isVMAP = (ad.timeOffset === null);
+            const isVMAP = (ad.timeOffset == null);
             if (isVMAP) {
                 mediaInformation.vmapAdsRequest = {
                     adTagUrl: adSource.src
