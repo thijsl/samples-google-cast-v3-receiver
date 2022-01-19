@@ -21,7 +21,7 @@ export class CSAIAdsConfigEnricher {
         } else {
             const messageBreak : Break = {
                 id: "b"+(breaks.length+1),
-                breakClipIds: ["bc1"],
+                breakClipIds: [clip.id],
                 position: position,
                 isWatched: false
             }
@@ -61,7 +61,9 @@ export class CSAIAdsConfigEnricher {
                 breakClips.push(breakClip);
                 this.addClipToBreaks(breaks, breakClip, position);
             }
-        })
+        });
+        console.log("breakClips", breakClips);
+        console.log("breaks", breaks);
         mediaInformation.breakClips = breakClips;
         mediaInformation.breaks = breaks;
     }
